@@ -22,7 +22,9 @@ app.use(cors({
     "http://localhost:3000",
     "http://localhost:4000",
     "https://ethnicbeing.com",
-    "https://admin.ethnicbeing.com"
+    "https://admin.ethnicbeing.com",
+    "https://ethnic-being-admin.onrender.com",
+    "https://www.ethnic-being-admin.onrender.com"
   ],
   credentials: true,
 }));
