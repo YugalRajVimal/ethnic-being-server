@@ -17,7 +17,13 @@ connectDB();
 
 // ── Core Middleware ───────────────────────────────────────────────────────────
 app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:3000",
+  origin: [
+    process.env.CLIENT_URL || "http://localhost:3000",
+    "http://localhost:3000",
+    "http://localhost:4000",
+    "https://ethnicbeing.com",
+    "https://admin.ethnicbeing.com"
+  ],
   credentials: true,
 }));
 app.use(express.json({ limit: "10mb" }));
