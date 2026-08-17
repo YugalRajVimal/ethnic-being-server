@@ -42,7 +42,7 @@ const contactForm = async (req, res) => {
 const uploadImage = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ success: false, message: "No image file provided" });
-    // const url = await uploadToCloudinary(req.file.path, "ethnicbeing/misc");
+    const url = await uploadToCloudinary(req.file.path, "ethnicbeing/misc");
     fs.unlinkSync(req.file.path);
     res.json({ success: true, url });
   } catch (error) {

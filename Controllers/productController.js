@@ -143,19 +143,19 @@ const createProduct = async (req, res) => {
     }
 
     // Handle image uploads
-    // if (req.files && req.files.length > 0) {
-    //   console.log(`Handling ${req.files.length} file(s) upload`);
-    //   const urls = [];
-    //   for (const file of req.files) {
-    //     console.log("Uploading file to Cloudinary:", file.path);
-    //     const url = await uploadToCloudinary(file.path, "ethnicbeing/products");
-    //     console.log("Uploaded URL:", url);
-    //     urls.push(url);
-    //     fs.unlinkSync(file.path);
-    //   }
-    //   data.images = urls;
-    //   console.log("Image URLs set for product:", urls);
-    // }
+    if (req.files && req.files.length > 0) {
+      console.log(`Handling ${req.files.length} file(s) upload`);
+      const urls = [];
+      for (const file of req.files) {
+        console.log("Uploading file to Cloudinary:", file.path);
+        const url = await uploadToCloudinary(file.path, "ethnicbeing/products");
+        console.log("Uploaded URL:", url);
+        urls.push(url);
+        fs.unlinkSync(file.path);
+      }
+      data.images = urls;
+      console.log("Image URLs set for product:", urls);
+    }
 
     const product = await Product.create(data);
     console.log("Product created:", product._id);
@@ -173,15 +173,15 @@ const updateProduct = async (req, res) => {
     if (typeof data.sizes === "string") data.sizes = JSON.parse(data.sizes);
     if (typeof data.tags  === "string") data.tags  = JSON.parse(data.tags);
 
-    // if (req.files && req.files.length > 0) {
-    //   const urls = [];
-    //   for (const file of req.files) {
-    //     const url = await uploadToCloudinary(file.path, "ethnicbeing/products");
-    //     urls.push(url);
-    //     fs.unlinkSync(file.path);
-    //   }
-    //   data.images = urls;
-    // }
+    if (req.files && req.files.length > 0) {
+      const urls = [];
+      for (const file of req.files) {
+        const url = await uploadToCloudinary(file.path, "ethnicbeing/products");
+        urls.push(url);
+        fs.unlinkSync(file.path);
+      }
+      data.images = urls;
+    }
 
     const product = await Product.findByIdAndUpdate(req.params.id, data, { new: true, runValidators: true });
     if (!product) return res.status(404).json({ success: false, message: "Product not found" });
