@@ -24,7 +24,9 @@ app.use(cors({
     "https://ethnicbeing.com",
     "https://admin.ethnicbeing.com",
     "https://ethnic-being-admin.onrender.com",
-    "https://www.ethnic-being-admin.onrender.com"
+    "https://www.ethnic-being-admin.onrender.com",
+    "https://unleashclub.info",
+    "https://www.unleashclub.info"
   ],
   credentials: true,
 }));
