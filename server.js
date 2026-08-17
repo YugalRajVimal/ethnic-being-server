@@ -12,6 +12,9 @@ dotenv.config();
 
 const app = express();
 
+// Trust reverse proxy (Nginx / Load Balancer)
+app.set("trust proxy", 1);
+
 // ── Database ──────────────────────────────────────────────────────────────────
 
 connectDB();
