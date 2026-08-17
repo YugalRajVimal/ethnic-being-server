@@ -131,23 +131,37 @@ const getNewArrivals = async (req, res) => {
 const createProduct = async (req, res) => {
   try {
     const data = { ...req.body };
-    if (typeof data.sizes === "string") data.sizes = JSON.parse(data.sizes);
-    if (typeof data.tags  === "string") data.tags  = JSON.parse(data.tags);
+    console.log("Received product data:", data);
 
-    // Handle image uploads
-    if (req.files && req.files.length > 0) {
-      const urls = [];
-      for (const file of req.files) {
-        const url = await uploadToCloudinary(file.path, "ethnicbeing/products");
-        urls.push(url);
-        fs.unlinkSync(file.path);
-      }
-      data.images = urls;
+    if (typeof data.sizes === "string") {
+      data.sizes = JSON.parse(data.sizes);
+      console.log("Parsed sizes:", data.sizes);
+    }
+    if (typeof data.tags  === "string") {
+      data.tags  = JSON.parse(data.tags);
+      console.log("Parsed tags:", data.tags);
     }
 
+    // Handle image uploads
+    // if (req.files && req.files.length > 0) {
+    //   console.log(`Handling ${req.files.length} file(s) upload`);
+    //   const urls = [];
+    //   for (const file of req.files) {
+    //     console.log("Uploading file to Cloudinary:", file.path);
+    //     const url = await uploadToCloudinary(file.path, "ethnicbeing/products");
+    //     console.log("Uploaded URL:", url);
+    //     urls.push(url);
+    //     fs.unlinkSync(file.path);
+    //   }
+    //   data.images = urls;
+    //   console.log("Image URLs set for product:", urls);
+    // }
+
     const product = await Product.create(data);
+    console.log("Product created:", product._id);
     res.status(201).json({ success: true, product });
   } catch (error) {
+    console.error("Error creating product:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -159,15 +173,15 @@ const updateProduct = async (req, res) => {
     if (typeof data.sizes === "string") data.sizes = JSON.parse(data.sizes);
     if (typeof data.tags  === "string") data.tags  = JSON.parse(data.tags);
 
-    if (req.files && req.files.length > 0) {
-      const urls = [];
-      for (const file of req.files) {
-        const url = await uploadToCloudinary(file.path, "ethnicbeing/products");
-        urls.push(url);
-        fs.unlinkSync(file.path);
-      }
-      data.images = urls;
-    }
+    // if (req.files && req.files.length > 0) {
+    //   const urls = [];
+    //   for (const file of req.files) {
+    //     const url = await uploadToCloudinary(file.path, "ethnicbeing/products");
+    //     urls.push(url);
+    //     fs.unlinkSync(file.path);
+    //   }
+    //   data.images = urls;
+    // }
 
     const product = await Product.findByIdAndUpdate(req.params.id, data, { new: true, runValidators: true });
     if (!product) return res.status(404).json({ success: false, message: "Product not found" });
